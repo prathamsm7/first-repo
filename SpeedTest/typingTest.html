@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div>
+      <h1>Welcome to the Typing Speed Test</h1>
+      <h3 id="msg"></h3>
+      <br />
+      <textarea
+        id="txtarea"
+        rows="10"
+        cols="100"
+        placeholder="Start typing here"
+      ></textarea>
+      <br />
+
+      <button id="btn">Start</button>
+    </div>
+
+    <script>
+      const setOfWords = [
+        " Opera refers to a dramatic art form, originating in Europe, in which the emotional content is conveyed to the audience as much through music, both vocal and instrumental, as it is through the lyrics.By contrast, in musical theater an actor's dramatic performance is primary, and the music plays a lesser role. The drama in opera is presented using the primary elements of theater such as scenery, costumes, and acting.  However, the words of the opera, or libretto, are sung rather than spoken.The singers are accompanied by a musical ensemble ranging from a small instrumental ensemble to a full symphonic orchestra.",
+        " Dolphins are regarded as the friendliest creatures in the sea and stories of them helping drowning sailors have been common since Roman times. The more we learn about dolphins,the more we realize that their society is more complex than people previously imagined. They look after other dolphins when they are ill, care for pregnant mothers and protect the weakest in the community, as we do. Some scientists have suggested that dolphins have a language but it is much more probable that they communicate with each other without needing words.",
+        " Naval architects never claim that a ship is unsinkable,  but the sinking of the passenger-and-car ferry Estonia in the Baltic surely should have never have happened.It was well designed and carefully maintained. It carried the proper number of lifeboats.It had been thoroughly inspected the day of its fatal voyage. Yet hours later, the Estonia rolled over and sank in a cold, stormy night. It went down so quickly that most of those on board, caught in their dark, flooding cabins,had no chance to save themselves: Of those who managed to scramble overboard, only 139 survived. ",
+        "Later, Magellan became involved in an insular conflict in the Philippines and was killed in a tribal battle. Only one ship and 17 sailors under the command of the Basque navigator Elcano survived to complete the westward journey to Spain and thus prove once and for all that the world is round, with no precipice at the edge. ",
+      ];
+
+      const msg = document.getElementById("msg");
+      const typeWords = document.getElementById("txtarea");
+      const btn = document.getElementById("btn");
+      let startTime, endTime;
+
+      const playGame = () => {
+        let randomNumber = Math.floor(Math.random() * setOfWords.length);
+        msg.innerText = setOfWords[randomNumber];
+        let date = new Date();
+        startTime = date.getTime();
+        btn.innerText = "Done";
+      };
+
+      const endPlay = () => {
+        let date = new Date();
+        endTime = date.getTime();
+        let totalTime = (endTime - startTime) / 1000;
+        console.log(totalTime);
+
+        let totalString = typeWords.value;
+        let wordCount = wordCounter(totalString);
+
+        let speed = Math.round((wordCount / totalTime) * 60);
+
+        let finalMsg = `You typed ${wordCount} words at ${speed}  per minute`;
+
+        finalMsg += compareWords(msg.innerText, totalString);
+
+        msg.innerText = finalMsg;
+      };
+
+      const compareWords = (str1, str2) => {
+        let words1 = str1.split(" ");
+        let words2 = str2.split(" ");
+
+        let cnt = 0;
+
+        words1.forEach(function (item, index) {
+          if (item == words2[index]) {
+            cnt++;
+          }
+        });
+
+        let errWords = words1.length - cnt;
+        return (
+          cnt +
+          "correct out of " +
+          words1.length +
+          " words and total number of error are" +
+          errWords +
+          "."
+        );
+      };
+
+      const wordCounter = (str) => {
+        let response = str.split(" ").length;
+        console.log(response);
+        return response;
+      };
+
+      btn.addEventListener("click", function () {
+        if (this.innerText == "Start") {
+          typeWords.disabled = false;
+          playGame();
+        } else if (this.innerText == "Done") {
+          typeWords.disabled = true;
+          btn.innerText = "Start";
+          endPlay();
+        }
+      });
+    </script>
+  </body>
+</html>
